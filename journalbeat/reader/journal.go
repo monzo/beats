@@ -45,7 +45,7 @@ type Reader struct {
 	config      Config
 	done        chan struct{}
 	logger      *logp.Logger
-	backoff     backoff.Backoff
+	backoff     *common.Backoff
 	changesChan chan int
 }
 
@@ -100,7 +100,7 @@ func newReader(logger *logp.Logger, done chan struct{}, c Config, journal *sdjou
 		config:      c,
 		done:        done,
 		logger:      logger,
-		backoff:     backoff.NewExpBackoff(done, c.Backoff, c.MaxBackoff),
+		backoff:     common.NewBackoff(done, c.Backoff, c.MaxBackoff),
 		changesChan: make(chan int),
 	}
 	r.seek(state.Cursor)
